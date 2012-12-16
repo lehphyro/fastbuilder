@@ -4,6 +4,8 @@ Project inspired by this blog post: http://garbagecollected.org/2007/07/12/build
 
 Example usage:
 
+```java
+
 import java.util.*;
 
 import com.github.lehphyro.fastbuilder.*;
@@ -48,3 +50,4 @@ public class Example {
 		return numbers;
 	}
 }
+```
