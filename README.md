@@ -1,0 +1,1 @@
+Project inspired by this blog post: http://garbagecollected.org/2007/07/12/builder-pattern-deluxe/
