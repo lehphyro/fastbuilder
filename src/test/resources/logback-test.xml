@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="A1" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d %p [%c{0}] - %m%n</pattern>
+		</encoder>
+	</appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="A1" />
+    </root>
+</configuration>
