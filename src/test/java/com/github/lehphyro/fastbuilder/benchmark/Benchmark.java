@@ -1,15 +1,26 @@
 package com.github.lehphyro.fastbuilder.benchmark;
 
-import static java.util.concurrent.TimeUnit.*;
-import static org.junit.Assert.*;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
+import static org.junit.Assert.assertEquals;
 
-import java.util.*;
+import java.util.List;
 
-import org.junit.*;
+import org.junit.Test;
 
-import com.google.common.base.*;
-import com.google.common.collect.*;
-import com.googlecode.charts4j.*;
+import com.github.lehphyro.fastbuilder.benchmark.TestClass.Builder;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.googlecode.charts4j.AxisLabels;
+import com.googlecode.charts4j.AxisLabelsFactory;
+import com.googlecode.charts4j.Color;
+import com.googlecode.charts4j.DataUtil;
+import com.googlecode.charts4j.GCharts;
+import com.googlecode.charts4j.Line;
+import com.googlecode.charts4j.LineChart;
+import com.googlecode.charts4j.Plots;
 
 public class Benchmark {
 
@@ -66,9 +77,10 @@ public class Benchmark {
 	protected long runManual(int count) {
 		long t0 = System.nanoTime();
 
+		TestClassManualBuilder builder = new TestClassManualBuilder();
 		int actual = 0;
 		for (int i = 0; i < count; i++) {
-			TestClass aux = new TestClassManualBuilder().value1(VALUE_1).value2(VALUE_2).value3(VALUE_3).build();
+			TestClass aux = builder.value1(VALUE_1).value2(VALUE_2).value3(VALUE_3).build();
 			if (CORRECT_RESULT.equals(aux)) {
 				actual++;
 			}
@@ -86,9 +98,10 @@ public class Benchmark {
 	protected long runGenerated(int count) {
 		long t0 = System.nanoTime();
 
+		Builder builder = TestClass.builder();
 		int actual = 0;
 		for (int i = 0; i < count; i++) {
-			TestClass aux = TestClass.builder().value1(VALUE_1).value2(VALUE_2).value3(VALUE_3).build();
+			TestClass aux = builder.value1(VALUE_1).value2(VALUE_2).value3(VALUE_3).build();
 			if (CORRECT_RESULT.equals(aux)) {
 				actual++;
 			}
