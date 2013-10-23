@@ -1,14 +1,38 @@
 package com.github.lehphyro.fastbuilder.internal.bytecode;
 
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_BRIDGE;
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
+import static org.objectweb.asm.Opcodes.ACC_PRIVATE;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACC_STATIC;
+import static org.objectweb.asm.Opcodes.ACC_SUPER;
+import static org.objectweb.asm.Opcodes.ACC_SYNTHETIC;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.ARETURN;
+import static org.objectweb.asm.Opcodes.ASM4;
+import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.ILOAD;
+import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.IRETURN;
+import static org.objectweb.asm.Opcodes.NEW;
+import static org.objectweb.asm.Opcodes.POP;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.RETURN;
 
-import java.util.*;
+import java.util.Set;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
-import com.github.lehphyro.fastbuilder.internal.*;
-import com.github.lehphyro.fastbuilder.util.*;
-import com.google.common.collect.*;
+import com.github.lehphyro.fastbuilder.internal.BuilderSpecification;
+import com.github.lehphyro.fastbuilder.util.Types;
+import com.google.common.collect.Sets;
 
 public class BytecodeBuilderClassVisitor extends ClassVisitor {
 
@@ -55,7 +79,7 @@ public class BytecodeBuilderClassVisitor extends ClassVisitor {
 				generateAddElementWriter(fieldType, fieldName, name, desc, signature, exceptions);
 			} else {
 				validateReturnType(returnType, name, desc);
-				generateAddAllElementsWriter(fieldType, fieldName, name, desc, signature, exceptions);
+				generateAddAllElementsWriter(fieldName, name, desc, signature, exceptions);
 			}
 		} else if (builderSpecification.isWriter(name, argCount)) {
 			validateReturnType(returnType, name, desc);
@@ -140,7 +164,8 @@ public class BytecodeBuilderClassVisitor extends ClassVisitor {
 		mv.visitEnd();
 	}
 
-	protected void generateAddAllElementsWriter(final Type type, final String fieldName, final String name, final String desc, final String signature, final String[] exceptions) {
+	protected void generateAddAllElementsWriter(final String fieldName, final String name, final String desc,
+			final String signature, final String[] exceptions) {
 		MethodVisitor mv = super.visitMethod(ACC_PUBLIC, name, desc, signature, exceptions);
 		mv.visitCode();
 		mv.visitVarInsn(ALOAD, 0);
