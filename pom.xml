@@ -4,7 +4,7 @@
 
 	<name>fastbuilder</name>
 	<description>A generator of builder objects based on the Builder design pattern</description>
-	<url>http://code.google.com/p/fastbuilder</url>
+	<url>https://github.com/lehphyro/fastbuilder</url>
 
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
@@ -67,9 +67,9 @@
 	</dependencies>
 
 	<scm>
-		<connection>scm:git:https://lehphyro@code.google.com/p/fastbuilder</connection>
-		<developerConnection>scm:git:https://lehphyro@code.google.com/p/fastbuilder</developerConnection>
-		<url>http://code.google.com/p/fastbuilder/source/browse</url>
+		<connection>scm:git:https://github.com/lehphyro/fastbuilder.git</connection>
+		<developerConnection>scm:git:https://github.com/lehphyro/fastbuilder.git</developerConnection>
+		<url>https://github.com/lehphyro/fastbuilder</url>
 	</scm>
 
 	<build>
