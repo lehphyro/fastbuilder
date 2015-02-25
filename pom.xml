@@ -15,7 +15,7 @@
 	<groupId>com.github.lehphyro.fastbuilder</groupId>
 	<artifactId>fastbuilder</artifactId>
 	<packaging>jar</packaging>
-	<version>1.2</version>
+	<version>1.2-SNAPSHOT</version>
 
 	<dependencies>
 		<!-- Logging -->
