@@ -1,16 +1,23 @@
 package com.github.lehphyro.fastbuilder.internal.bytecode;
 
-import java.io.*;
-import java.util.*;
-import java.util.concurrent.*;
+import com.github.lehphyro.fastbuilder.IBuilder;
+import com.github.lehphyro.fastbuilder.internal.BuilderProvider;
+import com.github.lehphyro.fastbuilder.internal.BuilderSpecification;
+import com.github.lehphyro.fastbuilder.internal.classloading.BuilderClassLoader;
+import com.github.lehphyro.fastbuilder.internal.classloading.ClassLoaders;
+import com.github.lehphyro.fastbuilder.util.Types;
+import com.google.common.io.Closeables;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.objectweb.asm.*;
-import org.slf4j.*;
-
-import com.github.lehphyro.fastbuilder.*;
-import com.github.lehphyro.fastbuilder.internal.*;
-import com.github.lehphyro.fastbuilder.internal.classloading.*;
-import com.github.lehphyro.fastbuilder.util.*;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class BytecodeBuilderProvider implements BuilderProvider {
 
@@ -50,10 +57,12 @@ public class BytecodeBuilderProvider implements BuilderProvider {
 
 		logger.debug("Generating builder implementation class [{}] for target [{}]", builderImplementationName, target);
 
+		InputStream is = null;
 		ClassReader reader;
 		ClassWriter writer;
 		try {
-			reader = new ClassReader(builderInterfaceName);
+			is = getClass().getClassLoader().getResourceAsStream(builderInterfaceName.replace('.', '/') + ".class");
+			reader = new ClassReader(is);
 			writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 			ClassVisitor chainVisitor = writer;
 			if (logger.isDebugEnabled()) {
@@ -70,8 +79,10 @@ public class BytecodeBuilderProvider implements BuilderProvider {
 
 			BytecodeBuilderClassVisitor generator = new BytecodeBuilderClassVisitor(chainVisitor, target, builderSpec, builderInterfaceName, builderImplementationName);
 			reader.accept(generator, ClassReader.SKIP_DEBUG);
-		} catch (IOException e) {
+		} catch (Throwable e) {
 			throw new IllegalStateException("Unable to generate builder bytecode", e);
+		} finally {
+			Closeables.closeQuietly(is);
 		}
 		return (Class<V>) classLoader.defineClass(builderImplementationName.replace('/', '.'), writer.toByteArray());
 	}

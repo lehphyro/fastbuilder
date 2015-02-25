@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>12.0</version>
+			<version>18.0</version>
 		</dependency>
 
 		<!-- ASM -->
@@ -98,7 +98,38 @@
 					</includes>
 				</configuration>
 			</plugin>
+
+			<!-- Repackaging ASM -->
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>jarjar-maven-plugin</artifactId>
+				<version>1.9</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jarjar</goal>
+						</goals>
+						<configuration>
+							<includes>
+								<include>org.ow2.asm:asm</include>
+								<include>org.ow2.asm:asm-util</include>
+							</includes>
+							<rules>
+								<rule>
+									<pattern>org.objectweb.asm.**</pattern>
+									<result>com.github.lehphyro.fastbuilder.asm.@1</result>
+								</rule>
+								<keep>
+									<pattern>com.github.lehphyro.fastbuilder.**</pattern>
+								</keep>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+
 		<pluginManagement>
 			<plugins>
 				<plugin>
