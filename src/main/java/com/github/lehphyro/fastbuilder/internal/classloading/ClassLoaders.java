@@ -21,7 +21,7 @@ public class ClassLoaders {
 	}
 
 	/**
-	 * In order to make {@link ClassLoader#defineClass()} public, we create our own class loader.
+	 * In order to make defineClass() public, we create our own class loader.
 	 * 
 	 * @param type Type from which we get the class loader.
 	 * @return Our own class loader making defineClass() public.

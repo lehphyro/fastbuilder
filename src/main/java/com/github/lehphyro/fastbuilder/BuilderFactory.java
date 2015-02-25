@@ -14,7 +14,9 @@ public class BuilderFactory {
 	/**
 	 * Creates a new {@link IBuilder} implementing the provided interface following
 	 * the {@link SimpleSetterBuilderSpecification} format.
-	 * 
+	 *
+	 * @param <T> Object being built type
+	 * @param <V> Builder type
 	 * @param spec Builder interface that the generated builder must implement.
 	 * @return New builder instance.
 	 */
@@ -25,8 +27,11 @@ public class BuilderFactory {
 	/**
 	 * Creates a new {@link IBuilder} implementing the provided interface following
 	 * the provided builder format specification.
-	 * 
+	 *
+	 * @param <T> Object being built type
+	 * @param <V> Builder type
 	 * @param spec Builder interface that the generated builder must implement.
+	 * @param builderSpec Specification of how to create builders
 	 * @return New builder instance.
 	 */
 	public static <T, V extends IBuilder<T>> V make(final Class<V> spec, final BuilderSpecification builderSpec) {
